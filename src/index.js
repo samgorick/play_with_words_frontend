@@ -95,16 +95,18 @@ function wordCheck(event){
     let idx = wordAr.indexOf(char)
     if (idx < 0){
       goodBad = false
-      event.target.value = ""
+      event.target.value = ""      
     } else {
       wordAr.splice(idx, 1)
     }
   })
-  
-  if (goodBad){
+  if (!goodBad){
+    alert("letter not on list or already used up")
+  } else {
     if (wordListGen.includes(event.target.value)){
       goodBad = false
       event.target.value = ""
+      alert("Cannot reuse accepted words")
     } else {
       wordListGen = wordListGen + event.target.value + " "
     }
