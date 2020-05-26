@@ -104,12 +104,12 @@ function wordCheck(event){
   if (!goodBad){
     alert("letter not on list or already used up")
   } else {
-    if (wordListGen.includes(event.target.value)){
+    if (wordListGen.includes(" " + event.target.value)){
       goodBad = false
       event.target.value = ""
       alert("Cannot reuse accepted words")
     } else {
-      wordListGen = wordListGen + event.target.value + " "
+      wordListGen = wordListGen + " " + event.target.value + " "
     }
   }
   if (goodBad){
@@ -124,12 +124,21 @@ function saveList(event){
   goodWords.childNodes.forEach(word => {
     list.push(word.innerText)
   })
-  const score = goodWords.childElementCount
+  // const score = goodWords.childElementCount
   let wordToSave = list.join(", ")
   //send word to backend to save 
+  const score = calcScore(list)
   resultList.innerText = wordToSave
   scoreDisp.innerText = `Your score is: ${score}`
   resultDiv.style.display = "block"
   console.log(wordToSave, score)
+}
+
+function calcScore(list){
+  let score = 0
+  list.forEach(item => {
+    score += item.length
+  })
+  return score
 }
 main()
