@@ -14,6 +14,7 @@ const saveWord = document.querySelector("#save-word")
 const resultDiv = document.querySelector(".result")
 const resultList = document.querySelector("#result-list")
 const scoreDisp = document.querySelector("#score")
+const userGames = document.querySelector(".user-games")
 let wordGen = ""
 let wordListGen = ""
 let currentUserId
@@ -52,7 +53,33 @@ function userLogin(event){
 
   fetch(USER_URL, reqObj)
   .then(resp => resp.json())
-  .then(userData => playGame(userData))
+  .then(userData => {
+    console.log(userData)
+    displayUserGames(userData)
+    playGame(userData)})
+}
+
+function displayUserGames(userData){
+  
+  userData.games.forEach(game => {
+    let letterId = game.letter_list_id
+    let letterList = userData.letter_lists.find(letterL => {
+      return letterL.id === letterId
+    })
+    let gameObj = {
+      word_list: game.word_list,
+      score: game.score,
+      letter_list: letterList.letters
+    }
+    userGames.innerHTML += displayOneGame(gameObj)
+  })
+
+}
+
+function displayOneGame(gameObj){
+  return `<div class="user-card"> <p>${gameObj.letter_list.split("").join(", ")}</p>` + 
+    `<p>${gameObj.word_list}</p>` + `<p>Score: ${gameObj.score}</p>` +
+    `</div>`
 }
 
 function playGame(user){
@@ -128,12 +155,12 @@ function wordCheck(event){
   if (!goodBad){
     alert("letter not on list or already used up")
   } else {
-    if (wordListGen.includes(event.target.value)){
+    if (wordListGen.includes(" " + event.target.value + " ")){
       goodBad = false
       event.target.value = ""
       alert("Cannot reuse accepted words")
     } else {
-      wordListGen = wordListGen + event.target.value + " "
+      wordListGen = wordListGen + " " + event.target.value + " "
     }
   }
   if (goodBad){
@@ -150,22 +177,29 @@ function saveList(event){
   })
   const score = calcScore(list)
   let wordToSave = list.join(", ")
+  let dataObj = {
+    word_list: wordToSave,
+    score: score,
+    user_id: currentUserId,
+    letter_list_id: charList.dataset.listId
+  }
   
   fetch(GAME_URL, {
     method: 'POST',
     headers: {'content-type': 'application/json'},
-    body: JSON.stringify({
-      word_list: wordToSave,
-      score: score,
-      user_id: currentUserId,
-      letter_list_id: charList.dataset.listId
-    })  
+    body: JSON.stringify(dataObj)  
   })
   .then(resp => resp.json())
   .then(gameResult => {
     resultList.innerText = gameResult.word_list
     scoreDisp.innerText = `Your score is: ${gameResult.score}`
     resultDiv.style.display = "block"
+    let gameObj = {
+      word_list: wordToSave,
+      score: score,
+      letter_list: wordGen
+    }
+    userGames.innerHTML += displayOneGame(gameObj)
     console.log(wordToSave, score)
   })
 }
