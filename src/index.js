@@ -2,7 +2,8 @@ const USER_URL = 'http://localhost:3000/users'
 const LETTER_LIST_URL = 'http://localhost:3000/letter_lists'
 const GAME_URL = 'http://localhost:3000/games'
 
-const container = document.querySelector(".container")
+const mainContainer = document.querySelector(".page-container")
+const container = document.querySelector(".login-container")
 const userDisp = document.querySelector(".user-display")
 const login = document.querySelector(".log-in")
 const userDisplayName = document.querySelector("#user-display-name")
@@ -27,6 +28,7 @@ const charNum = 10
 let li = ""
 
 function main(){
+  mainContainer.style.display = "block"
   container.style.display = "block"
   userDisp.style.display = "none"
   playArea.style.display = "none"
