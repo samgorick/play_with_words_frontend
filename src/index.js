@@ -13,7 +13,8 @@ const scoreDisp = document.querySelector("#score")
 let wordGen = ""
 let wordListGen = ""
 
-const characters = "abcdefghijklmnopqrstuvwxyz"
+//Character distribution taken from standard Scrabble distribution
+const characters = "aaaaaaaaabbccddddeeeeeeeeeeeeffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrssssttttttuuuuvvwwxyyz"
 const charNum = 10
 let li = ""
 
@@ -77,11 +78,11 @@ function userLogin(event){
 
 function getChars(){
   for ( var i = 0; i < charNum; i++ ) {
-    wordGen += characters.charAt(Math.floor(Math.random() * 26));
+    wordGen += characters.charAt(Math.floor(Math.random() * 100));
   }
   //send list to backend to add
   //charList.dataset.listId = ??
-  charList.innerText = `Your alphabets: ${wordGen.split("").join(", ")}`
+  charList.innerText = `Your alphabet: ${wordGen.split("").join(", ")}`
 }
 
 function wordCheck(event){
