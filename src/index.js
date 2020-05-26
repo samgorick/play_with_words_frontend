@@ -1,7 +1,11 @@
+const USER_URL = 'http://localhost:3000/users'
+const LETTER_LIST_URL = 'http://localhost:3000/letter_lists'
+const GAME_URL = 'http://localhost:3000/games'
+
 const container = document.querySelector(".container")
 const userDisp = document.querySelector(".user-display")
 const login = document.querySelector(".log-in")
-const user = document.querySelector("#user")
+const userDisplayName = document.querySelector("#user-display-name")
 const playArea = document.querySelector(".play-area")
 const charList = document.querySelector("#char-list")
 const goodWords = document.querySelector("#good-words")
@@ -12,6 +16,7 @@ const resultList = document.querySelector("#result-list")
 const scoreDisp = document.querySelector("#score")
 let wordGen = ""
 let wordListGen = ""
+let currentUserId
 
 //Character distribution taken from standard Scrabble distribution
 const characters = "aaaaaaaaabbccddddeeeeeeeeeeeeffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrssssttttttuuuuvvwwxyyz"
@@ -36,16 +41,29 @@ function main(){
 function userLogin(event){
   event.preventDefault()
   let userName = event.target[0].value
-  // fetch to create user
-  // after successful add user or find user
+
+  const reqObj = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({name: userName})
+  }
+
+  fetch(USER_URL, reqObj)
+  .then(resp => resp.json())
+  .then(userData => playGame(userData))
+}
+
+function playGame(user){
+  currentUserId = user.id
   container.style.display = "none"
-  user.innerText = `${userName}, welcome! Let's play!`
+  userDisplayName.innerText = `Welcome, ${user.name}! Let's play!`
   userDisp.style.display = "block"
   getChars()
   playArea.style.display = "block"
   saveWord.disabled = true
   countdown(2)
-  
   
   function countdown(minutes) {
     let seconds = 60;
@@ -72,7 +90,6 @@ function userLogin(event){
       }
     }
     tick();
-    
   }
 }
 
@@ -80,9 +97,16 @@ function getChars(){
   for ( var i = 0; i < charNum; i++ ) {
     wordGen += characters.charAt(Math.floor(Math.random() * 100));
   }
-  //send list to backend to add
-  //charList.dataset.listId = ??
-  charList.innerText = `Your alphabet: ${wordGen.split("").join(", ")}`
+  fetch(LETTER_LIST_URL, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({letter_list: wordGen})
+  })
+  .then(resp => resp.json())
+  .then(wordData => {
+    charList.dataset.listId = wordData.id
+    charList.innerText = `Your alphabet: ${wordData.letters.split("").join(", ")}`
+  })
 }
 
 function wordCheck(event){
@@ -126,10 +150,23 @@ function saveList(event){
   })
   const score = goodWords.childElementCount
   let wordToSave = list.join(", ")
-  //send word to backend to save 
-  resultList.innerText = wordToSave
-  scoreDisp.innerText = `Your score is: ${score}`
-  resultDiv.style.display = "block"
-  console.log(wordToSave, score)
+  
+  fetch(GAME_URL, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+      word_list: wordToSave,
+      score: score,
+      user_id: currentUserId,
+      letter_list_id: charList.dataset.listId
+    })  
+  })
+  .then(resp => resp.json())
+  .then(gameResult => {
+    resultList.innerText = gameResult.word_list
+    scoreDisp.innerText = `Your score is: ${gameResult.score}`
+    resultDiv.style.display = "block"
+    console.log(wordToSave, score)
+  })
 }
 main()
