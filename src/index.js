@@ -15,12 +15,14 @@ const resultDiv = document.querySelector(".result")
 const resultList = document.querySelector("#result-list")
 const scoreDisp = document.querySelector("#score")
 const userGames = document.querySelector(".user-games")
-let wordGen = ""
+const currentScore = document.querySelector("#current-score")
+let wordGenerated = ""
 let wordListGen = ""
 let currentUserId
+let score = 0
 
 //Character distribution taken from standard Scrabble distribution
-const characters = "aaaaaaaaabbccddddeeeeeeeeeeeeffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrssssttttttuuuuvvwwxyyz"
+const characters = "aaaaaaaaabbccddddeeeeeeeeeeeefffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrsssssttttttuuuuvvwwxyyz"
 const charNum = 10
 let li = ""
 
@@ -54,7 +56,6 @@ function userLogin(event){
   fetch(USER_URL, reqObj)
   .then(resp => resp.json())
   .then(userData => {
-    console.log(userData)
     displayUserGames(userData)
     playGame(userData)})
 }
@@ -69,6 +70,7 @@ function displayUserGames(userData){
     let gameObj = {
       word_list: game.word_list,
       score: game.score,
+      letter_list_id: letterId,
       letter_list: letterList.letters
     }
     userGames.innerHTML += displayOneGame(gameObj)
@@ -77,7 +79,7 @@ function displayUserGames(userData){
 }
 
 function displayOneGame(gameObj){
-  return `<div class="user-card"> <p>${gameObj.letter_list.split("").join(", ")}</p>` + 
+  return `<div class="user-card" data-list-id=${gameObj.letter_list_id}> <p>${gameObj.letter_list.split("").join(", ")}</p>` + 
     `<p>${gameObj.word_list}</p>` + `<p>Score: ${gameObj.score}</p>` +
     `</div>`
 }
@@ -122,12 +124,12 @@ function playGame(user){
 
 function getChars(){
   for ( var i = 0; i < charNum; i++ ) {
-    wordGen += characters.charAt(Math.floor(Math.random() * 100));
+    wordGenerated += characters.charAt(Math.floor(Math.random() * 100));
   }
   fetch(LETTER_LIST_URL, {
     method: 'POST',
     headers: {'content-type': 'application/json'},
-    body: JSON.stringify({letter_list: wordGen})
+    body: JSON.stringify({letter_list: wordGenerated})
   })
   .then(resp => resp.json())
   .then(wordData => {
@@ -140,34 +142,46 @@ function wordCheck(event){
   //perform word check against dictionary and char list
   //if successful return add the work to list
   
-  let wordAr = wordGen.split("")
+  let wordArray = wordGenerated.split("")
   let goodBad = true
 
   event.target.value.split("").forEach(char => {
-    let idx = wordAr.indexOf(char)
+    let idx = wordArray.indexOf(char)
     if (idx < 0){
       goodBad = false
       event.target.value = ""      
     } else {
-      wordAr.splice(idx, 1)
+      wordArray.splice(idx, 1)
     }
   })
   if (!goodBad){
     alert("letter not on list or already used up")
   } else {
-    if (wordListGen.includes(" " + event.target.value + " ")){
+    if (checkRegex(event.target.value)){
+      if (wordListGen.includes(" " + event.target.value + " ")){
+        goodBad = false
+        event.target.value = ""
+        alert("Cannot reuse accepted words")
+      } else {
+        wordListGen = wordListGen + " " + event.target.value + " "
+      }
+    } else {
       goodBad = false
       event.target.value = ""
-      alert("Cannot reuse accepted words")
-    } else {
-      wordListGen = wordListGen + " " + event.target.value + " "
+      alert("Word is not in the dictionary")
     }
   }
   if (goodBad){
     li += `<li>${event.target.value}</li>`
+    score += event.target.value.length
+    currentScore.innerHTML = `Score: ${score}`
     event.target.value = ""
     goodWords.innerHTML = li
   }
+}
+
+function checkRegex(word) {
+  return regex.test(word)
 }
 
 function saveList(event){
@@ -175,7 +189,7 @@ function saveList(event){
   goodWords.childNodes.forEach(word => {
     list.push(word.innerText)
   })
-  const score = calcScore(list)
+  // const score = calcScore(list)
   let wordToSave = list.join(", ")
   let dataObj = {
     word_list: wordToSave,
@@ -195,9 +209,10 @@ function saveList(event){
     scoreDisp.innerText = `Your score is: ${gameResult.score}`
     resultDiv.style.display = "block"
     let gameObj = {
+      letter_list_id: charList.dataset.listId,
       word_list: wordToSave,
       score: score,
-      letter_list: wordGen
+      letter_list: wordGenerated
     }
     userGames.innerHTML += displayOneGame(gameObj)
     console.log(wordToSave, score)
