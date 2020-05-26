@@ -148,7 +148,7 @@ function saveList(event){
   goodWords.childNodes.forEach(word => {
     list.push(word.innerText)
   })
-  const score = goodWords.childElementCount
+  const score = calcScore(list)
   let wordToSave = list.join(", ")
   
   fetch(GAME_URL, {
@@ -169,4 +169,13 @@ function saveList(event){
     console.log(wordToSave, score)
   })
 }
+
+function calcScore(list){
+  let score = 0
+  list.forEach(item => {
+    score += item.length
+  })
+  return score
+}
+
 main()
