@@ -120,10 +120,10 @@ function playGame(user){
   playArea.style.display = "block"
   saveWord.disabled = true
   timer.innerHTML = `Game ends in <span id="time">02:00</span>`
-  // countdown(0)
+  countdown(2)
+
   function countdown(minutes) {
     let seconds = 60;
-    // let seconds = 20;
     let mins = minutes
     function tick() {
       //This script expects an element with an ID = "counter". You can change that to what ever you want. 
@@ -258,7 +258,7 @@ function playGameAgain(){
   charList.innerHTML = ""
   turnOffReplay()
   playGame(currentUser)
-  playAgain.innerText = "Play agian"
+  playAgain.innerText = "Play again"
 }
 
 function replayGame(event){
