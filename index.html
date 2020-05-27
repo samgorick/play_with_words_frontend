@@ -6,21 +6,23 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
+  <div class="page-container">
+    <div class="login-container">
       <form class="log-in">
-        <h3>Log in</h3>
+        <h1>Login</h1>
         <input
           type="text"
           name="name"
           value=""
-          placeholder="Please enter a username..."
+          placeholder="Username"
+          autocomplete="off"
           class="input-text"
         />
         <br />
         <input
           type="submit"
           name="submit"
-          value="Login"
+          value="Log In"
           class="submit"
         />
       </form>
@@ -31,7 +33,7 @@
     <div class="play-area">
       <div id="timer">Game ends in <span id="time">02:00</span></div>
       <div>
-      <h4 id="char-list" data-list-id=0></h4>
+      <div id="char-list" data-list-id=0></div>
       <h4 id="current-score"></h4>
       <ul id="good-words" style="list-style-type:none">
 
@@ -44,11 +46,12 @@
       class="input-text"
       />
       <div>
-      <button id="save-word" class="button">Save</button>
+      <button id="save-word" class="submit">Save</button>
       </div>
       <div>
       <button id="play-again" class="button">Play again</button> 
       </div>
+
     <br />
     </div>
     <div class="result">
@@ -59,7 +62,9 @@
     <div class="user-games">
 
     </div>
+  </div>
   </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js" defer></script>
   <script type="text/javascript" src="src/index.js" defer></script>
   <script src="src/dictionary.js" charset="utf-8" defer></script>
 </html>

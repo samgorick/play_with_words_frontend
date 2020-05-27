@@ -3,15 +3,69 @@ body {
   margin: 0;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 20px;
-  text-align: center;
-  background-color: gainsboro;
   font-weight: 300;
+  background-color: #b2bec3;
 }
 
-.container {
-  margin: 2rem;
-  border: blue solid 1px;
-  box-shadow: 3px 4px #21083d
+.page-container {
+  text-align: center;
+  background: linear-gradient(to right, #e66465, #9198e5);
+}
+
+.login-container {
+  width: 50%;
+  padding: 40px;
+  position: absolute;
+  border: 2px solid black;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(to right, #e66465, #9198e5);
+  border-radius: 12px;
+  transition: 0.25s;
+}
+
+.log-in h1 {
+  color: white;
+  text-transform: uppercase;
+}
+
+.input-text {
+  border: 0;
+  margin: 2rem auto;
+  text-align: center;
+  border: 2px solid #2d3436;
+  padding: 14px 10px;
+  width: 250px;
+  color: grey;
+  outline: none;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+.input-text:hover {
+  width: 400px;
+  border-color: #00cec9;
+}
+
+.submit {
+  border: 0;
+  margin: 2rem auto;
+  text-align: center;
+  border: 2px solid #0984e3;
+  background-color: #0984e3;
+  padding: 14px 10px;
+  width: 250px;
+  border-radius: 24px;
+  outline: none;
+  color: white;
+  transition: 0.25s;
+  text-transform: uppercase;
+}
+
+.submit:hover {
+  border-color: #00cec9;
+  background-color: #00cec9;
 }
 
 .user-display {
@@ -22,6 +76,7 @@ body {
 
 #timer {
   color: darkred;
+  font-weight: bold;
 }
 
 .play-area {
@@ -30,13 +85,36 @@ body {
   box-shadow: 3px 4px #3a041d
 }
 
+#char-list {
+  display: flex;
+  justify-content: center;
+}
+
+.guess-letter {
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: red;
+  width: 40px;
+  height: 40px;
+  padding: 1px;
+  margin: 5px;
+  color: white;
+  border-radius: 12px;
+}
+
+.guess-letter p {
+  margin: 0;
+  line-height: 40px;
+}
+
 .result {
   margin: 2rem;
   border: darkgrey solid 1px;
   box-shadow: 3px 4px #1b043a
 }
 
-.button input[type=button], input[type=submit], input[type=reset]{
+/* .button input[type=button], input[type=submit], input[type=reset]{
   background-color: #333;
   border: none;
   color: white;
@@ -46,12 +124,12 @@ body {
   cursor: pointer;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 15px;
-}
+} */
 
-.button a:hover input[type=submit], input[type=reset]{
+/* .button a:hover input[type=submit], input[type=reset]{
   background-color: #ddd;
   color: black;
-}
+} */
 
 ul {
   padding-inline-start: 0px;
@@ -64,7 +142,7 @@ input[type=text] {
 
 #word {
   position: relative;
-  margin: 1em 1em 1em 2em;
+  margin: 1em;
   width: 40em;
 }
 
@@ -100,11 +178,10 @@ input[type=text] {
   text-decoration: none;
   margin: 15px 2px;
   cursor: pointer;
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 12px;
 }
 #save-word:disabled,
 #save-word[disabled]{
+  display: none;
   background-color:gray;
   border: none;
   color: white;
@@ -122,17 +199,22 @@ input[type=text] {
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   grid-gap: 20px;
-  padding-top: 10px;
-  padding-bottom: 30px;
+  padding: 2px 16px;
 }
 
 .user-card {
   background-color: #eeeeee;
   height: 250px;
   width: 300px;
-  box-shadow: 10px 10px grey;
   padding: 10px;
   border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.user-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 @media only screen and (min-width: 500px) {
