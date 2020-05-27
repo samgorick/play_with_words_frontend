@@ -193,7 +193,7 @@ input[type=text] {
   font-size: 12px;
 }
 
-.user-games {
+.user-games, .highscores {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
@@ -201,7 +201,7 @@ input[type=text] {
   padding: 2px 16px;
 }
 
-.user-card {
+.user-card, .highscore-card {
   background-color: #e6e8f2;
   height: 250px;
   width: 300px;
@@ -217,13 +217,13 @@ input[type=text] {
 }
 
 @media only screen and (min-width: 500px) {
-  .user-games {
+  .user-games, .highscores {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media only screen and (min-width: 850px) {
-  .user-games {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+  .user-games, .highscores {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }

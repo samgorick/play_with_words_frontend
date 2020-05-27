@@ -20,6 +20,8 @@ const currentScore = document.querySelector("#current-score")
 const playAgain = document.querySelector("#play-again")
 const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
+const highscores = document.querySelector(".highscores")
+
 const tl = gsap.timeline();
 let wordGenerated = ""
 let wordListGen = ""
@@ -49,10 +51,11 @@ function main(){
   saveWord.addEventListener("click", saveList)
   playAgain.addEventListener("click", playGameAgain)
   userGames.addEventListener("click", replayGame)
+  highscores.addEventListener("click", replayGame)
 }
 
 function userLogin(event){
-  // checkRegex("a")
+  checkRegex("a")
   event.preventDefault()
   let userName = event.target[0].value
 
@@ -71,8 +74,25 @@ function userLogin(event){
     userDisp.style.display = "block"
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
     displayUserGames(userData)
+    loadHighscores()
     currentUser = userData
     playAgain.style.display = "inline"})
+}
+
+function loadHighscores(){
+  fetch(GAME_URL)
+  .then(resp => resp.json())
+  .then(highscoreData => {
+    highscoreData.forEach(game => {
+      let cardData = `<div class="highscore-card" data-list-id=${game.letter_list_id}>
+        <p>${game.letter_list.letters.split("").join(", ")}</p>
+        <h4>${game.user.name}</h4>
+        <p>Score: ${game.score}</p>
+        <button class="replay">Challenge</button>
+      </div>`
+      highscores.innerHTML += cardData
+    })
+  })
 }
 
 function displayUserGames(userData){
@@ -216,6 +236,7 @@ function checkRegex(word) {
 }
 
 function saveList(event){
+  saveWord.disabled = true
   let list = [] 
   goodWords.childNodes.forEach(word => {
     list.push(word.innerText)
