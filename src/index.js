@@ -16,10 +16,15 @@ const resultList = document.querySelector("#result-list")
 const scoreDisp = document.querySelector("#score")
 const userGames = document.querySelector(".user-games")
 const currentScore = document.querySelector("#current-score")
+const playAgain = document.querySelector("#play-again")
+const timer = document.getElementById("timer")
+
+
 let wordGenerated = ""
 let wordListGen = ""
-let currentUserId
+let currentUser
 let score = 0
+let replayAGame = false
 
 //Character distribution taken from standard Scrabble distribution
 const characters = "aaaaaaaaabbccddddeeeeeeeeeeeefffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrsssssttttttuuuuvvwwxyyz"
@@ -39,6 +44,8 @@ function main(){
     }
   })
   saveWord.addEventListener("click", saveList)
+  playAgain.addEventListener("click", playGameAgain)
+  userGames.addEventListener("click", replayGame)
 }
 
 function userLogin(event){
@@ -57,6 +64,7 @@ function userLogin(event){
   .then(resp => resp.json())
   .then(userData => {
     displayUserGames(userData)
+    currentUser = userData
     playGame(userData)})
 }
 
@@ -74,24 +82,39 @@ function displayUserGames(userData){
       letter_list: letterList.letters
     }
     userGames.innerHTML += displayOneGame(gameObj)
-  })
+    })
 
+    turnOffReplay()
 }
 
 function displayOneGame(gameObj){
   return `<div class="user-card" data-list-id=${gameObj.letter_list_id}> <p>${gameObj.letter_list.split("").join(", ")}</p>` + 
-    `<p>${gameObj.word_list}</p>` + `<p>Score: ${gameObj.score}</p>` +
+    `<p>${gameObj.word_list}</p>` + `<p>Score: ${gameObj.score}</p>` + `<button class="replay">Replay</button>` +
     `</div>`
 }
 
 function playGame(user){
-  currentUserId = user.id
+  // currentUserId = user.id
+  playAgain.style.display = "none"
   container.style.display = "none"
   userDisplayName.innerText = `Welcome, ${user.name}! Let's play!`
   userDisp.style.display = "block"
-  getChars()
+  goodWords.innerHTML = ""
+  resultDiv.style.display = "none"
+  currentScore.innerHTML = ""
+  
+  li = ""
+  score = 0
+  word.disabled = false
+  if (!replayAGame){ 
+    wordGenerated = ""
+    getChars()
+  } else {
+    replayAGame = false
+  }
   playArea.style.display = "block"
   saveWord.disabled = true
+  timer.innerHTML = `Game ends in <span id="time">02:00</span>`
   countdown(2)
   
   function countdown(minutes) {
@@ -103,7 +126,7 @@ function playGame(user){
       let current_minutes = mins-1
       seconds--;
       if (current_minutes === 0 && seconds === 0){
-        let timer = document.getElementById("timer")
+        
         timer.childNodes[1].remove()
         timer.innerText = "Time's up! Hit save to see your score..."
         saveWord.disabled = false
@@ -194,7 +217,7 @@ function saveList(event){
   let dataObj = {
     word_list: wordToSave,
     score: score,
-    user_id: currentUserId,
+    user_id: currentUser.id,
     letter_list_id: charList.dataset.listId
   }
   
@@ -217,14 +240,42 @@ function saveList(event){
     userGames.innerHTML += displayOneGame(gameObj)
     console.log(wordToSave, score)
   })
+  playAgain.style.display = "inline"
+  replays = document.getElementsByClassName("replay")
+  for (let i = 0; i < replays.length; i++){ 
+    replays[i].style.display = "inline"
+  }
 }
 
-function calcScore(list){
-  let score = 0
-  list.forEach(item => {
-    score += item.length
-  })
-  return score
+function playGameAgain(){
+  playGame(currentUser)
 }
+
+function replayGame(event){
+  
+  if (event.target.className === "replay"){
+    charList.innerText = `Your alphabet: ${event.target.parentNode.firstElementChild.innerText}`
+    wordGenerated = event.target.parentNode.firstElementChild.innerText.split(", ").join("")
+    charList.dataset.listId = event.target.parentNode.dataset.listId
+    turnOffReplay()
+    replayAGame = true    
+    playGame(currentUser)
+  }
+
+}
+
+function turnOffReplay(){
+  replays = document.getElementsByClassName("replay")
+  for (let i = 0; i < replays.length; i++){ 
+    replays[i].style.display = "none"
+  }
+}
+// function calcScore(list){
+//   let score = 0
+//   list.forEach(item => {
+//     score += item.length
+//   })
+//   return score
+// }
 
 main()

@@ -68,6 +68,30 @@ input[type=text] {
   width: 40em;
 }
 
+#play-again {
+  background-color:green;
+  border: none;
+  color: white;
+  padding: 10px 22px;
+  text-decoration: none;
+  margin: 15px 2px;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+.replay {
+  background-color:green;
+  border: none;
+  color: white;
+  padding: 10px 22px;
+  text-decoration: none;
+  margin: 15px 2px;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+}
+
 #save-word {
   background-color:red;
   border: none;
@@ -91,6 +115,8 @@ input[type=text] {
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
 }
+
+
 .user-games {
   display: grid;
   grid-template-columns: 1fr;
