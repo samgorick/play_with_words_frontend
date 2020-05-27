@@ -21,6 +21,7 @@ const playAgain = document.querySelector("#play-again")
 const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const highscores = document.querySelector(".highscores")
+const hscores = document.querySelector(".hscores")
 
 const tl = gsap.timeline();
 let wordGenerated = ""
@@ -41,11 +42,14 @@ function main(){
   playArea.style.display = "none"
   resultDiv.style.display = "none"
   playAgain.style.display = "none"
+  hscores.style.display = "none"
   
   login.addEventListener("submit", userLogin)
   wordInput.addEventListener("keypress", (event) => {
     if (event.key === "Enter"){
       wordCheck(event)
+    } else {
+      highlightChar(event)
     }
   })
   saveWord.addEventListener("click", saveList)
@@ -73,6 +77,7 @@ function userLogin(event){
     container.style.display = "none"
     userDisp.style.display = "block"
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
+    hscores.style.display = "inline"
     displayUserGames(userData)
     loadHighscores()
     currentUser = userData
@@ -183,16 +188,13 @@ function getChars(){
   .then(resp => resp.json())
   .then(wordData => {
     charList.dataset.listId = wordData.id
-    let arr = wordData.letters.split("")
-    arr.forEach(letter => {
-      charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
-    })
-    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"});
-  })
+    loadAnimatedChar(wordData.letters)
+   })
 }
 
 function wordCheck(event){
- 
+  resetChars()
+  
   let wordArray = wordGenerated.split("")
   let goodBad = true
 
@@ -288,12 +290,7 @@ function replayGame(event){
     charList.innerHTML = ""
     wordGenerated = event.target.parentNode.firstElementChild.innerText.split(", ").join("")
     charList.dataset.listId = event.target.parentNode.dataset.listId
-    let arr = wordGenerated.split("")
-    arr.forEach(letter => {
-      charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
-    })
-    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"});
-    turnOffReplay()
+    loadAnimatedChar(wordGenerated)
     replayAGame = true    
     playGame(currentUser)
   }
@@ -307,5 +304,29 @@ function turnOffReplay(){
   }
 }
 
+function loadAnimatedChar(wordInput){
+  let arr = wordInput.split("")
+    arr.forEach(letter => {
+      charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
+    })
+    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"}); 
+    resetChars()
+     
+}
 
+function highlightChar(){
+  console.log(event.key)
+  for (i = 0; i < 10; i++){
+    if (event.key.toUpperCase() === charList.children[i].innerText && charList.children[i].className !== "found-letter"){
+      charList.children[i].className = "found-letter"
+      break
+    }
+  }
+}
+
+function resetChars(){
+  for (i = 0; i < 10; i++){
+    charList.children[i].className = "guess-letter"
+  }
+}
 main()
