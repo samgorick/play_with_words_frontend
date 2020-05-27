@@ -38,6 +38,8 @@ function main(){
   userDisp.style.display = "none"
   playArea.style.display = "none"
   resultDiv.style.display = "none"
+  playAgain.style.display = "none"
+  
   login.addEventListener("submit", userLogin)
   wordInput.addEventListener("keypress", (event) => {
     if (event.key === "Enter"){
@@ -65,9 +67,12 @@ function userLogin(event){
   fetch(USER_URL, reqObj)
   .then(resp => resp.json())
   .then(userData => {
+    container.style.display = "none"
+    userDisp.style.display = "block"
+    userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
     displayUserGames(userData)
     currentUser = userData
-    playGame(userData)})
+    playAgain.style.display = "inline"})
 }
 
 function displayUserGames(userData){
@@ -85,8 +90,6 @@ function displayUserGames(userData){
     }
     userGames.innerHTML += displayOneGame(gameObj)
     })
-
-    turnOffReplay()
 }
 
 function displayOneGame(gameObj){
@@ -117,10 +120,10 @@ function playGame(user){
   playArea.style.display = "block"
   saveWord.disabled = true
   timer.innerHTML = `Game ends in <span id="time">02:00</span>`
-  countdown(2)
-  
+  // countdown(0)
   function countdown(minutes) {
     let seconds = 60;
+    // let seconds = 20;
     let mins = minutes
     function tick() {
       //This script expects an element with an ID = "counter". You can change that to what ever you want. 
@@ -165,14 +168,11 @@ function getChars(){
       charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
     })
     tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"});
-    // charList.innerText = `Your alphabet: ${wordData.letters.split("").join(", ")}`
   })
 }
 
 function wordCheck(event){
-  //perform word check against dictionary and char list
-  //if successful return add the work to list
-  
+ 
   let wordArray = wordGenerated.split("")
   let goodBad = true
 
@@ -220,7 +220,6 @@ function saveList(event){
   goodWords.childNodes.forEach(word => {
     list.push(word.innerText)
   })
-  // const score = calcScore(list)
   let wordToSave = list.join(", ")
   let dataObj = {
     word_list: wordToSave,
@@ -256,15 +255,23 @@ function saveList(event){
 }
 
 function playGameAgain(){
+  charList.innerHTML = ""
+  turnOffReplay()
   playGame(currentUser)
+  playAgain.innerText = "Play agian"
 }
 
 function replayGame(event){
   
   if (event.target.className === "replay"){
-    charList.innerText = `Your alphabet: ${event.target.parentNode.firstElementChild.innerText}`
+    charList.innerHTML = ""
     wordGenerated = event.target.parentNode.firstElementChild.innerText.split(", ").join("")
     charList.dataset.listId = event.target.parentNode.dataset.listId
+    let arr = wordGenerated.split("")
+    arr.forEach(letter => {
+      charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
+    })
+    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"});
     turnOffReplay()
     replayAGame = true    
     playGame(currentUser)
