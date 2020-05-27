@@ -120,6 +120,7 @@ function playGame(user){
   playArea.style.display = "block"
   saveWord.disabled = true
   timer.innerHTML = `Game ends in <span id="time">02:00</span>`
+  countdown(2)
 
   function countdown(minutes) {
     let seconds = 60;
@@ -257,7 +258,7 @@ function playGameAgain(){
   charList.innerHTML = ""
   turnOffReplay()
   playGame(currentUser)
-  playAgain.innerText = "Play agian"
+  playAgain.innerText = "Play again"
 }
 
 function replayGame(event){
