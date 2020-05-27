@@ -4,39 +4,43 @@ body {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 20px;
   font-weight: 300;
-  background-color: #b2bec3;
+  background-color: #6983f7;
 }
 
 .page-container {
   text-align: center;
-  background: linear-gradient(to right, #e66465, #9198e5);
+  /* background: linear-gradient(to right, #e66465, #9198e5); */
 }
 
 .login-container {
-  width: 50%;
+  width: 35%;
   padding: 40px;
   position: absolute;
-  border: 2px solid black;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(to right, #e66465, #9198e5);
+  background-color: #e6e8f2;
   border-radius: 12px;
   transition: 0.25s;
 }
 
-.log-in h1 {
-  color: white;
+h1 {
+  color: black;
+  opacity: 70%;
+}
+
+.log-in {
+  color: black;
+  opacity: 70%;
   text-transform: uppercase;
 }
 
 .input-text {
   border: 0;
-  margin: 2rem auto;
+  margin: 1rem auto;
   text-align: center;
-  border: 2px solid #2d3436;
   padding: 14px 10px;
-  width: 250px;
+  width: 65%;
   color: grey;
   outline: none;
   border-radius: 24px;
@@ -44,18 +48,18 @@ body {
 }
 
 .input-text:hover {
-  width: 400px;
-  border-color: #00cec9;
+  width: 90%;
+  border: 2px solid #4bc8f2;
 }
 
 .submit {
   border: 0;
-  margin: 2rem auto;
+  margin: 1rem auto;
   text-align: center;
-  border: 2px solid #0984e3;
-  background-color: #0984e3;
+  border: 2px solid #6983f7;
+  background-color: #6983f7;
   padding: 14px 10px;
-  width: 250px;
+  width: 65%;
   border-radius: 24px;
   outline: none;
   color: white;
@@ -64,25 +68,39 @@ body {
 }
 
 .submit:hover {
-  border-color: #00cec9;
-  background-color: #00cec9;
+  border-color: #4bc8f2;
+  background-color: #4bc8f2;
 }
 
 .user-display {
-  margin: 2rem;
-  border: grey solid 1px;
-  box-shadow: 3px 4px #0a5b91
+  margin: 0rem 0rem 2rem 0rem;
+  /* border: grey solid 1px;
+  box-shadow: 3px 4px #0a5b91 */
 }
 
 #timer {
+  padding: 2rem;
+  text-align: left;
   color: darkred;
   font-weight: bold;
+  display: inline-block;
+  width: 40%;
+}
+
+#current-score {
+  font-weight: bold;
+  text-align: right;
+  display: inline-block;
+  width: 40%;
 }
 
 .play-area {
   margin: 2rem;
-  border: maroon solid 1px;
-  box-shadow: 3px 4px #3a041d
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #e6e8f2;
+  border-radius: 12px;
 }
 
 #char-list {
@@ -94,7 +112,7 @@ body {
   font-size: 30px;
   font-weight: bold;
   text-transform: uppercase;
-  background-color: red;
+  background-color: #4bc8f2;
   width: 40px;
   height: 40px;
   padding: 1px;
@@ -114,23 +132,6 @@ body {
   box-shadow: 3px 4px #1b043a
 }
 
-/* .button input[type=button], input[type=submit], input[type=reset]{
-  background-color: #333;
-  border: none;
-  color: white;
-  padding: 15px 25px;
-  text-decoration: none;
-  margin: 18px 3px;
-  cursor: pointer;
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 15px;
-} */
-
-/* .button a:hover input[type=submit], input[type=reset]{
-  background-color: #ddd;
-  color: black;
-} */
-
 ul {
   padding-inline-start: 0px;
 }
@@ -143,7 +144,6 @@ input[type=text] {
 #word {
   position: relative;
   margin: 1em;
-  width: 40em;
 }
 
 #play-again {
@@ -171,7 +171,7 @@ input[type=text] {
 }
 
 #save-word {
-  background-color:red;
+  background-color:#4bc8f2;
   border: none;
   color: white;
   padding: 10px 22px;
@@ -193,7 +193,6 @@ input[type=text] {
   font-size: 12px;
 }
 
-
 .user-games {
   display: grid;
   grid-template-columns: 1fr;
@@ -203,7 +202,7 @@ input[type=text] {
 }
 
 .user-card {
-  background-color: #eeeeee;
+  background-color: #e6e8f2;
   height: 250px;
   width: 300px;
   padding: 10px;

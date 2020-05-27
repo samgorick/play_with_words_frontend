@@ -18,6 +18,7 @@ const scoreDisp = document.querySelector("#score")
 const userGames = document.querySelector(".user-games")
 const currentScore = document.querySelector("#current-score")
 const playAgain = document.querySelector("#play-again")
+const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const tl = gsap.timeline();
 let wordGenerated = ""
@@ -51,6 +52,7 @@ function main(){
 }
 
 function userLogin(event){
+  // checkRegex("a")
   event.preventDefault()
   let userName = event.target[0].value
 
@@ -99,9 +101,9 @@ function displayOneGame(gameObj){
 function playGame(user){
   // currentUserId = user.id
   playAgain.style.display = "none"
-  // container.style.display = "none"
-  // userDisplayName.innerText = `Welcome, ${user.name}! Let's play!`
-  // userDisp.style.display = "block"
+  container.style.display = "none"
+  userDisplayName.innerText = `Welcome, ${user.name}! Let's play with words!`
+  userDisp.style.display = "block"
   goodWords.innerHTML = ""
   resultDiv.style.display = "none"
   currentScore.innerHTML = ""
@@ -131,7 +133,8 @@ function playGame(user){
       if (current_minutes === 0 && seconds === 0){
         
         timer.childNodes[1].remove()
-        timer.innerText = "Time's up! Hit save to see your score..."
+        // guessInput.style.display = "none"
+        timer.innerText = "Time's up!"
         saveWord.disabled = false
         word.disabled = true
       }
