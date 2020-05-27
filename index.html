@@ -4,6 +4,11 @@
     <meta charset="utf-8" />
     <title>Play With Words</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      ul#good-words li {
+        display:inline;
+      }
+    </style>
   </head>
   <body>
   <div class="page-container">
@@ -29,15 +34,14 @@
     </div>
     <div class="user-display"> 
       <h3 id="user-display-name"></h3>
+      <div>
+        <button id="play-again" class="button">Play game</button> 
+      </div>
     </div>
     <div class="play-area">
       <div id="timer">Game ends in <span id="time">02:00</span></div>
-      <div>
       <div id="char-list" data-list-id=0></div>
       <h4 id="current-score"></h4>
-      <ul id="good-words" style="list-style-type:none">
-
-      </ul> 
       <input
       type="text"
       id="word"
@@ -48,10 +52,8 @@
       <div>
       <button id="save-word" class="submit">Save</button>
       </div>
-      <div>
-      <button id="play-again" class="button">Play again</button> 
-      </div>
-
+      <ul id="good-words" style="list-style-type:none">
+      </ul> 
     <br />
     </div>
     <div class="result">
