@@ -17,6 +17,7 @@ const resultList = document.querySelector("#result-list")
 const scoreDisp = document.querySelector("#score")
 const userGames = document.querySelector(".user-games")
 const currentScore = document.querySelector("#current-score")
+const tl = gsap.timeline();
 let wordGenerated = ""
 let wordListGen = ""
 let currentUserId
@@ -136,7 +137,12 @@ function getChars(){
   .then(resp => resp.json())
   .then(wordData => {
     charList.dataset.listId = wordData.id
-    charList.innerText = `Your alphabet: ${wordData.letters.split("").join(", ")}`
+    let arr = wordData.letters.split("")
+    arr.forEach(letter => {
+      charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
+    })
+    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"});
+    // charList.innerText = `Your alphabet: ${wordData.letters.split("").join(", ")}`
   })
 }
 

@@ -23,7 +23,7 @@
           type="submit"
           name="submit"
           value="Log In"
-          class="login-submit"
+          class="submit"
         />
       </form>
     </div>
@@ -33,7 +33,7 @@
     <div class="play-area">
       <div id="timer">Game ends in <span id="time">02:00</span></div>
       <div>
-      <h4 id="char-list" data-list-id=0></h4>
+      <div id="char-list" data-list-id=0></div>
       <h4 id="current-score"></h4>
       <ul id="good-words" style="list-style-type:none">
 
@@ -45,7 +45,7 @@
       placeholder="Hit enter to check..."
       class="input-text"
       />
-      <button id="save-word" class="button">Save</button> 
+      <button id="save-word" class="submit">Save</button> 
     <br />
     </div>
     <div class="result">
@@ -58,6 +58,7 @@
     </div>
   </div>
   </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js" defer></script>
   <script type="text/javascript" src="src/index.js" defer></script>
   <script src="src/dictionary.js" charset="utf-8" defer></script>
 </html>
