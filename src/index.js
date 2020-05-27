@@ -2,7 +2,8 @@ const USER_URL = 'http://localhost:3000/users'
 const LETTER_LIST_URL = 'http://localhost:3000/letter_lists'
 const GAME_URL = 'http://localhost:3000/games'
 
-const container = document.querySelector(".container")
+const mainContainer = document.querySelector(".page-container")
+const container = document.querySelector(".login-container")
 const userDisp = document.querySelector(".user-display")
 const login = document.querySelector(".log-in")
 const userDisplayName = document.querySelector("#user-display-name")
@@ -16,6 +17,7 @@ const resultList = document.querySelector("#result-list")
 const scoreDisp = document.querySelector("#score")
 const userGames = document.querySelector(".user-games")
 const currentScore = document.querySelector("#current-score")
+const tl = gsap.timeline();
 let wordGenerated = ""
 let wordListGen = ""
 let currentUserId
@@ -27,6 +29,7 @@ const charNum = 10
 let li = ""
 
 function main(){
+  mainContainer.style.display = "block"
   container.style.display = "block"
   userDisp.style.display = "none"
   playArea.style.display = "none"
@@ -134,7 +137,12 @@ function getChars(){
   .then(resp => resp.json())
   .then(wordData => {
     charList.dataset.listId = wordData.id
-    charList.innerText = `Your alphabet: ${wordData.letters.split("").join(", ")}`
+    let arr = wordData.letters.split("")
+    arr.forEach(letter => {
+      charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
+    })
+    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"});
+    // charList.innerText = `Your alphabet: ${wordData.letters.split("").join(", ")}`
   })
 }
 
