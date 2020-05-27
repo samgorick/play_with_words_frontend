@@ -6,63 +6,63 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-  <div class="page-container">
-    <div class="login-container">
-      <form class="log-in">
-        <h1>Login</h1>
+    <div class="page-container">
+      <div class="login-container">
+        <form class="log-in">
+          <h1>Play With Words!</h1>
+          <input
+            type="text"
+            name="name"
+            value=""
+            placeholder="Username"
+            autocomplete="off"
+            class="input-text"
+          />
+          <br />
+          <input
+            type="submit"
+            name="submit"
+            value="Log In"
+            class="submit"
+          />
+        </form>
+      </div>
+      <div class="user-display"> 
+        <h1 id="user-display-name"></h1>
+      </div>
+      <div class="play-area">
+        <div id="timer">
+          Game ends in <span id="time">02:00</span>
+        </div>
+        <div id="current-score"></div>
+        <div id="char-list" data-list-id=0></div>
         <input
-          type="text"
-          name="name"
-          value=""
-          placeholder="Username"
-          autocomplete="off"
-          class="input-text"
+        type="text"
+        id="word"
+        value=""
+        placeholder="Hit enter to check..."
+        class="input-text"
         />
+        <div>
+          <button id="save-word" class="submit">Save Score</button>
+        </div>
+        <div>
+          <button id="play-again" class="button">Play new game</button> 
+        </div>
+        <ul id="good-words" style="list-style-type:none">
+
+        </ul>
         <br />
-        <input
-          type="submit"
-          name="submit"
-          value="Log In"
-          class="submit"
-        />
-      </form>
-    </div>
-    <div class="user-display"> 
-      <h3 id="user-display-name"></h3>
-    </div>
-    <div class="play-area">
-      <div id="timer">Game ends in <span id="time">02:00</span></div>
-      <div>
-      <div id="char-list" data-list-id=0></div>
-      <h4 id="current-score"></h4>
-      <ul id="good-words" style="list-style-type:none">
-
-      </ul> 
-      <input
-      type="text"
-      id="word"
-      value=""
-      placeholder="Hit enter to check..."
-      class="input-text"
-      />
-      <div>
-      <button id="save-word" class="submit">Save</button>
       </div>
-      <div>
-      <button id="play-again" class="button">Play again</button> 
+      <div class="result">
+        <h4>Your words</h4>
+        <h4 id="result-list"></h4>
+        <h4 id="score"></h4>
       </div>
+      <div class="user-games">
 
-    <br />
+      </div>
     </div>
-    <div class="result">
-      <h4>Your words</h4>
-      <h4 id="result-list"></h4>
-      <h4 id="score"></h4>
-    </div>
-    <div class="user-games">
-
-    </div>
-  </div>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js" defer></script>
   <script type="text/javascript" src="src/index.js" defer></script>
