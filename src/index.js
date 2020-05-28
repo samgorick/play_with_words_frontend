@@ -21,6 +21,7 @@ const playAgain = document.querySelector("#play-again")
 const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const highscores = document.querySelector(".highscores")
+const highscoreAlert = document.querySelector("#highscore-alert")
 
 const sounds = {
   playFoundWord: () => {
@@ -64,7 +65,7 @@ function main(){
   playArea.style.display = "none"
   // resultDiv.style.display = "none"
   playAgain.style.display = "none"
-  
+  highscoreAlert.style.display = "none"
   userGamesHeader.style.display = "none"
   
   // hscores.style.display = "none"
@@ -111,8 +112,6 @@ function userLogin(event){
     tl.from(playAgain, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     highscoreHeader.style.display = "block"
     tl.from(highscoreHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
-    loadHighscores()
-    highscores.style.display = "flex"
     userGamesHeader.style.display = "block"
     tl.from(userGamesHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
@@ -318,7 +317,12 @@ function saveList(event){
   }
   if (score > scoreToBeat){
     sounds.playHighscore()
-    loadHighscores()
+    highscoreAlert.style.display = "block"
+    highscores.innerHTML = ""
+    tl.fromTo(highscoreAlert, {opacity: 1, fontSize: 0, color: "red"}, {duration: 4, opacity: 0, fontSize: 150, onComplete : function(){
+      highscoreAlert.style.display = "none"
+      loadHighscores()
+    }});
   }
 }
 
