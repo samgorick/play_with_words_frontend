@@ -9,7 +9,6 @@ body {
 
 .page-container {
   text-align: center;
-  /* background: linear-gradient(to right, #e66465, #9198e5); */
 }
 
 .login-container {
@@ -52,7 +51,7 @@ h1 {
   border: 2px solid #4bc8f2;
 }
 
-.submit {
+.submit, .replay {
   border: 0;
   margin: 1rem auto;
   text-align: center;
@@ -65,17 +64,39 @@ h1 {
   color: white;
   transition: 0.25s;
   text-transform: uppercase;
+  font-size: 16px;
 }
 
-.submit:hover {
+#play-again {
   border-color: #4bc8f2;
   background-color: #4bc8f2;
+  margin: 5rem auto;
+  cursor: pointer;
+  border: 0;
+  text-align: center;
+  padding: 14px 10px;
+  width: 50%;
+  border-radius: 24px;
+  outline: none;
+  color: white;
+  transition: 0.25s;
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+.submit:hover, .replay:hover {
+  border-color: #4bc8f2;
+  background-color: #4bc8f2;
+  cursor: pointer;
+}
+
+#word {
+  position: relative;
+  margin: 1em;
 }
 
 .user-display {
   margin: 0rem 0rem 2rem 0rem;
-  /* border: grey solid 1px;
-  box-shadow: 3px 4px #0a5b91 */
 }
 
 #timer {
@@ -95,7 +116,7 @@ h1 {
 }
 
 .play-area {
-  margin: 2rem;
+  margin: 5rem;
   width: 60%;
   margin-left: auto;
   margin-right: auto;
@@ -143,6 +164,15 @@ h1 {
 
 ul {
   padding-inline-start: 0px;
+  flex-wrap: wrap;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+}
+
+li {
+  padding: 8px;
+  text-transform: uppercase;
 }
 
 input[type=text] {
@@ -153,18 +183,6 @@ input[type=text] {
 #word {
   position: relative;
   margin: 1em;
-}
-
-#play-again, .replay {
-  background-color:green;
-  border: none;
-  color: white;
-  padding: 10px 22px;
-  text-decoration: none;
-  margin: 15px 2px;
-  cursor: pointer;
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 12px;
 }
 
 #save-word {
@@ -185,27 +203,30 @@ input[type=text] {
   padding: 10px 22px;
   text-decoration: none;
   margin: 15px 2px;
-  cursor: pointer;
+  cursor: pointer;ƒ
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
 }
 
 .user-games, .highscores {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto;
-  grid-gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   padding: 2px 16px;
 }
 
 .user-card, .highscore-card {
   background-color: #e6e8f2;
-  height: 250px;
-  width: 300px;
+  height: auto;
+  width: 220px;
   padding: 10px;
+  margin: 10px;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
+}
+
+.highscore-card {
+  width: 350px
 }
 
 .highscore-card {
@@ -215,16 +236,4 @@ input[type=text] {
 /* On mouse-over, add a deeper shadow */
 .user-card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-@media only screen and (min-width: 500px) {
-  .user-games, .highscores {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media only screen and (min-width: 850px) {
-  .user-games, .highscores {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
 }
