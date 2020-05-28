@@ -21,12 +21,8 @@ const playAgain = document.querySelector("#play-again")
 const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const highscores = document.querySelector(".highscores")
-
 const highscoreHeader = document.querySelector("#highscore-header")
 const userGamesHeader = document.querySelector("#user-games-header")
-
-// const hscores = document.querySelector(".hscores")
-
 
 const tl = gsap.timeline();
 let wordGenerated = ""
@@ -89,16 +85,17 @@ function userLogin(event){
   .then(userData => {
     container.style.display = "none"
     userDisp.style.display = "block"
-    tl.from(userDisp, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+    tl.from(userDisplayName, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     tl.from(playAgain, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     highscoreHeader.style.display = "block"
     tl.from(highscoreHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+    loadHighscores()
+    highscores.style.display = "flex"
     userGamesHeader.style.display = "block"
     tl.from(userGamesHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
 
-    highscores.style.display = "flex"
-    loadHighscores()
+
     displayUserGames(userData)
     currentUser = userData
     playAgain.style.display = "inline"
@@ -327,7 +324,7 @@ function loadAnimatedChar(wordInput){
     arr.forEach(letter => {
       charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
     })
-    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"}); 
+    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.1, rotate: 720, ease: "back"}); 
     resetChars()
      
 }
