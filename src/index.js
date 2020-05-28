@@ -76,6 +76,7 @@ const sounds = {
 const highscoreHeader = document.querySelector("#highscore-header")
 const userGamesHeader = document.querySelector("#user-games-header")
 
+// this set up the timeline function to be used for animation
 const tl = gsap.timeline();
 let wordGenerated = ""
 let wordListGen = ""
@@ -91,6 +92,7 @@ const charNum = 10
 let li = ""
 
 function main(){
+  // this is to set up the modal popup alert
   span.onclick = function() {
     modal.style.display = "none";
   }
@@ -110,7 +112,12 @@ function main(){
   userGamesHeader.style.display = "none"
   highscores.style.display = "none"
   
+  // add listener for login submit
   login.addEventListener("submit", userLogin)
+  // add listener for key press
+  // enter will trigger word checks
+  // backspace will un-highlight the character enter
+  // anyother char will trigger highlight char check
   wordInput.addEventListener("keyup", (event) => {
     if (event.key === "Enter"){
       wordCheck(event)
@@ -128,7 +135,11 @@ function main(){
   highscores.addEventListener("click", replayGame)
 }
 
+// this function login a new user. Backend will generate a new one if not found.
+// it then load the high scores from DB
+// it them load all the games played by user before
 function userLogin(event){
+  // this line call checkRegex to prime the dictionary so it's faster during play
   checkRegex("a")
   event.preventDefault()
   let userName = event.target[0].value
@@ -147,12 +158,15 @@ function userLogin(event){
   fetch(USER_URL, reqObj)
   .then(resp => resp.json())
   .then(userData => {
+    // the following animate the buttons and labels
     container.style.display = "none"
     userDisp.style.display = "block"
     highscoreHeader.style.display = "block"
     userGamesHeader.style.display = "block"
     playAgain.style.display = "inline"
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
+
+    // this display all the games played before
 
     pageLoadAnimations(userDisplayName)
     pageLoadAnimations(playAgain)
@@ -168,6 +182,7 @@ function pageLoadAnimations(element){
   return tl.from(element, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
 }
 
+// this loads the highscores from backend. The index route on backend returns top 3 scores data
 function loadHighscores(){
   highscores.innerHTML = ""
   fetch(GAME_URL)
@@ -187,6 +202,7 @@ function loadHighscores(){
   })
 }
 
+// this displays all games played by user
 function displayUserGames(userData){
   
   userData.games.forEach(game => {
@@ -205,12 +221,14 @@ function displayUserGames(userData){
     tl.from(".user-card", {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
 }
 
+// this display one single game card
 function displayOneGame(gameObj){
   return `<div class="user-card" data-list-id=${gameObj.letter_list_id}> <p>${gameObj.letter_list.split("").join(", ")}</p>` + 
   `<p>Score: ${gameObj.score}</p>` + `<button class="replay">Replay</button>` +
     `</div>`
 }
 
+// this is the main game play logic
 function playGame(user){
   playAgain.style.display = "none"
   container.style.display = "none"
@@ -222,6 +240,7 @@ function playGame(user){
   li = ""
   score = 0
   word.disabled = false
+  // only reload new letters when it is not a replay of played game
   if (!replayAGame){ 
     wordGenerated = ""
     getChars()
@@ -231,11 +250,12 @@ function playGame(user){
   playArea.style.display = "block"
   saveWord.disabled = true
   timer.innerHTML = `Game ends in <span id="time">02:00</span>`
-
+  // turn off display of all replay buttons
   turnOffReplay()
-
+  // start countdown of 2 min
   countdown(2)
 
+  // this is the countdown funtion for the 2 min timer
   function countdown(minutes) {
     let seconds = 60;
     let mins = minutes
@@ -264,6 +284,8 @@ function playGame(user){
   }
 }
 
+// this get a random 10 letters from the char list
+// generated list is sent to backend for update
 function getChars(){
   for ( var i = 0; i < charNum; i++ ) {
     wordGenerated += characters.charAt(Math.floor(Math.random() * 100));
@@ -280,6 +302,7 @@ function getChars(){
   })
 }
 
+// this check if the word is valid
 function wordCheck(event){
   resetChars()
   charIdx = []
@@ -287,6 +310,7 @@ function wordCheck(event){
   let wordArray = wordGenerated.split("")
   let goodBad = true
 
+  // this check if letter entered is on list or alreadt exhausted
   event.target.value.split("").forEach(char => {
     let idx = wordArray.indexOf(char)
     if (idx < 0){
@@ -301,6 +325,7 @@ function wordCheck(event){
     modal.style.display = "block"
     modalText.innerText = "Letter not on list or already used up!"
   } else {
+    // this check if the word is good and if same word is resused
     if (checkRegex(event.target.value)){
       if (wordListGen.includes(" " + event.target.value + " ")){
         sounds.playBadWord()
@@ -320,6 +345,7 @@ function wordCheck(event){
     }
   }
   if (goodBad){
+    // increment score if word is good
     sounds.playFoundWord()
     li += `<li>${event.target.value}</li>`
     score += event.target.value.length
@@ -329,10 +355,12 @@ function wordCheck(event){
   }
 }
 
+// this check word against disctionary
 function checkRegex(word) {
   return regex.test(word)
 }
 
+// this save the word list to the backend
 function saveList(event){
   playArea.style.display = "none"
   let list = [] 
@@ -368,6 +396,7 @@ function saveList(event){
   for (let i = 0; i < replays.length; i++){ 
     replays[i].style.display = "inline"
   }
+  // if score beats the lowest of the highscore, reload the highscore cards
   if (score > scoreToBeat){
     sounds.playHighscore()
     highscoreAlert.style.display = "block"
@@ -379,6 +408,7 @@ function saveList(event){
   }
 }
 
+// this is triggered when user wants to play a new game
 function playGameAgain(){
   playArea.style.display = "block"
   charList.innerHTML = ""
@@ -387,6 +417,7 @@ function playGameAgain(){
   playAgain.innerText = "Play again"
 }
 
+// this is triggered when user wants to replay an old game or a challenge
 function replayGame(event){
   if (event.target.className === "replay"){
     if(event.target.parentNode.className === "highscore-card"){
@@ -403,6 +434,7 @@ function replayGame(event){
   }
 }
 
+// this turns off all the replay buttons
 function turnOffReplay(){
   replays = document.getElementsByClassName("replay")
   for (let i = 0; i < replays.length; i++){ 
@@ -410,6 +442,7 @@ function turnOffReplay(){
   }
 }
 
+// this load the letters thru animation
 function loadAnimatedChar(wordInput){
   sounds.playLoadLetters()
   let arr = wordInput.split("")
@@ -421,6 +454,7 @@ function loadAnimatedChar(wordInput){
      
 }
 
+// this highlights the letter typed that mataches the one on char list
 function highlightChar(){
   for (i = 0; i < charList.children.length; i++){
     if (event.key.toUpperCase() === charList.children[i].innerText && charList.children[i].className !== "found-letter"){
@@ -434,6 +468,7 @@ function highlightChar(){
   }
 }
 
+// this un-highlights the letter when backspace is hit
 function unhighlightChar(){
   if (charIdx[0] !== "x"){
   charList.children[charIdx[0]].className = "guess-letter"
@@ -441,6 +476,7 @@ function unhighlightChar(){
   charIdx.shift()
 }
 
+// this reset the color of all letters after a reload.
 function resetChars(){
   for (i = 0; i < charList.children.length; i++){
     charList.children[i].className = "guess-letter"
