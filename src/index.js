@@ -84,7 +84,6 @@ let score = 0
 let replayAGame = false
 let charIdx = []
 let scoreToBeat = 0
-let letterfound = true
 
 //Character distribution taken from standard Scrabble distribution
 const characters = "aaaaaaaaabbccddddeeeeeeeeeeeefffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrsssssttttttuuuuvvwwxyyz"
@@ -423,22 +422,23 @@ function loadAnimatedChar(wordInput){
 }
 
 function highlightChar(){
-  letterfound = false
   for (i = 0; i < charList.children.length; i++){
     if (event.key.toUpperCase() === charList.children[i].innerText && charList.children[i].className !== "found-letter"){
       charList.children[i].className = "found-letter"
       charIdx.unshift(i)
-      letterfound = true
       break
-    } 
+    }
+  }
+  if (i === charList.children.length){
+    charIdx.unshift("x")
   }
 }
 
 function unhighlightChar(){
-  if (letterfound){
+  if (charIdx[0] !== "x"){
   charList.children[charIdx[0]].className = "guess-letter"
+  } 
   charIdx.shift()
-  }
 }
 
 function resetChars(){
