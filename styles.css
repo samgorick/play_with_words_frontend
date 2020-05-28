@@ -203,7 +203,7 @@ input[type=text] {
   padding: 10px 22px;
   text-decoration: none;
   margin: 15px 2px;
-  cursor: pointer;ƒ
+  cursor: pointer;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
 }
@@ -227,10 +227,6 @@ input[type=text] {
 
 .highscore-card {
   width: 350px
-}
-
-.highscore-card {
-  background-color: lightsteelblue;
 }
 
 /* On mouse-over, add a deeper shadow */

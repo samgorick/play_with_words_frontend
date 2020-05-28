@@ -25,7 +25,7 @@ const highscores = document.querySelector(".highscores")
 const highscoreHeader = document.querySelector("#highscore-header")
 const userGamesHeader = document.querySelector("#user-games-header")
 
-const hscores = document.querySelector(".hscores")
+// const hscores = document.querySelector(".hscores")
 
 
 const tl = gsap.timeline();
@@ -51,7 +51,8 @@ function main(){
   
   userGamesHeader.style.display = "none"
   
-  hscores.style.display = "none"
+  // hscores.style.display = "none"
+  highscores.style.display = "none"
   
   login.addEventListener("submit", userLogin)
   wordInput.addEventListener("keypress", (event) => {
@@ -93,9 +94,7 @@ function userLogin(event){
     tl.from(userGamesHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
 
-    hscores.style.display = "inline"
-    displayUserGames(userData)
-
+    highscores.style.display = "flex"
     loadHighscores()
     displayUserGames(userData)
     currentUser = userData
@@ -299,7 +298,7 @@ function saveList(event){
 }
 
 function playGameAgain(){
-  playArea.style.display = "block"
+  // playArea.style.display = "block"
   charList.innerHTML = ""
   turnOffReplay()
   playGame(currentUser)
