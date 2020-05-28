@@ -127,7 +127,7 @@ h1 {
 #char-list {
   display: flex;
   justify-content: center;
-  width: 50%;
+  width: 300px;
   flex-wrap: wrap;
   margin-left: auto;
   margin-right: auto;
@@ -165,6 +165,7 @@ ul {
   flex-wrap: wrap;
   list-style-type: none;
   display: flex;
+  justify-content: center;
 }
 
 li {
