@@ -35,6 +35,7 @@ let currentUser
 let score = 0
 let replayAGame = false
 let charIdx = []
+let scoreToBeat = 0
 
 //Character distribution taken from standard Scrabble distribution
 const characters = "aaaaaaaaabbccddddeeeeeeeeeeeefffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrsssssttttttuuuuvvwwxyyz"
@@ -84,6 +85,9 @@ function userLogin(event){
     body: JSON.stringify({name: userName})
   }
 
+  loadHighscores()
+  highscores.style.display = "flex"
+
   fetch(USER_URL, reqObj)
   .then(resp => resp.json())
   .then(userData => {
@@ -97,8 +101,6 @@ function userLogin(event){
     tl.from(userGamesHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
 
-    highscores.style.display = "flex"
-    loadHighscores()
     displayUserGames(userData)
     currentUser = userData
     playAgain.style.display = "inline"
@@ -106,10 +108,12 @@ function userLogin(event){
 }
 
 function loadHighscores(){
+  highscores.innerHTML = ""
   fetch(GAME_URL)
   .then(resp => resp.json())
   .then(highscoreData => {
     highscoreData.forEach(game => {
+      scoreToBeat = game.score
       let cardData = `<div class="highscore-card" data-list-id=${game.letter_list_id}>
         <p>${game.letter_list.letters.split("").join(", ")}</p>
         <h4>${game.user.name}</h4>
@@ -294,6 +298,9 @@ function saveList(event){
   for (let i = 0; i < replays.length; i++){ 
     replays[i].style.display = "inline"
   }
+  if (score > scoreToBeat){
+    loadHighscores()
+  }
 }
 
 function playGameAgain(){
@@ -327,7 +334,7 @@ function loadAnimatedChar(wordInput){
     arr.forEach(letter => {
       charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
     })
-    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"}); 
+    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "back"}); 
     resetChars()
      
 }
