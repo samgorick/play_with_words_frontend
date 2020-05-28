@@ -66,6 +66,11 @@ const sounds = {
     const challenge = new Audio()
     challenge.src = "src/sound_effects/challenge.mp3"
     challenge.play()
+  },
+  playReplayIt: () => {
+    const replayIt = new Audio()
+    replayIt.src = "src/sound_effects/replayIt.mp3"
+    replayIt.play()
   }
 }
 const highscoreHeader = document.querySelector("#highscore-header")
@@ -226,6 +231,9 @@ function playGame(user){
   playArea.style.display = "block"
   saveWord.disabled = true
   timer.innerHTML = `Game ends in <span id="time">02:00</span>`
+
+  turnOffReplay()
+
   countdown(2)
 
   function countdown(minutes) {
@@ -375,7 +383,7 @@ function saveList(event){
 function playGameAgain(){
   playArea.style.display = "block"
   charList.innerHTML = ""
-  turnOffReplay()
+  // turnOffReplay()
   playGame(currentUser)
   playAgain.innerText = "Play again"
 }
@@ -384,6 +392,8 @@ function replayGame(event){
   if (event.target.className === "replay"){
     if(event.target.parentNode.className === "highscore-card"){
       sounds.playChallenge()
+    } else {
+      sounds.playReplayIt()
     }
     charList.innerHTML = ""
     wordGenerated = event.target.parentNode.firstElementChild.innerText.split(", ").join("")
