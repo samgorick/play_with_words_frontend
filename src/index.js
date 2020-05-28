@@ -61,6 +61,11 @@ const sounds = {
     const badWord = new Audio()
     badWord.src = "src/sound_effects/badWord.mp3"
     badWord.play()
+  },
+  playChallenge: () => {
+    const challenge = new Audio()
+    challenge.src = "src/sound_effects/challenge.mp3"
+    challenge.play()
   }
 }
 const highscoreHeader = document.querySelector("#highscore-header")
@@ -377,6 +382,9 @@ function playGameAgain(){
 
 function replayGame(event){
   if (event.target.className === "replay"){
+    if(event.target.parentNode.className === "highscore-card"){
+      sounds.playChallenge()
+    }
     charList.innerHTML = ""
     wordGenerated = event.target.parentNode.firstElementChild.innerText.split(", ").join("")
     charList.dataset.listId = event.target.parentNode.dataset.listId
