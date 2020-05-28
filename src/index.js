@@ -22,6 +22,9 @@ const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const highscores = document.querySelector(".highscores")
 const highscoreAlert = document.querySelector("#highscore-alert")
+const modal = document.getElementById("myModal")
+const modalText = document.getElementById("modal-text")
+const span = document.getElementsByClassName("close")[0]
 
 const sounds = {
   playFoundWord: () => {
@@ -38,7 +41,27 @@ const sounds = {
     const highscoreSound = new Audio()
     highscoreSound.src = "src/sound_effects/highscore.mp3"
     highscoreSound.play()
-    }
+  },
+  playLoadLetters: () => {
+    const loadLetters = new Audio()
+    loadLetters.src = "src/sound_effects/loadLetters.mp3"
+    loadLetters.play()
+  },
+  playKeyPress: () => {
+    const keyPress = new Audio()
+    keyPress.src = "src/sound_effects/keyPress.mp3"
+    keyPress.play()
+  },
+  playBackSpace: () => {
+    const backSpace = new Audio()
+    backSpace.src = "src/sound_effects/backSpace.mp3"
+    backSpace.play()
+  },
+  playBadWord: () => {
+    const badWord = new Audio()
+    badWord.src = "src/sound_effects/badWord.mp3"
+    badWord.play()
+  }
 }
 const highscoreHeader = document.querySelector("#highscore-header")
 const userGamesHeader = document.querySelector("#user-games-header")
@@ -51,6 +74,7 @@ let score = 0
 let replayAGame = false
 let charIdx = []
 let scoreToBeat = 0
+let letterfound = true
 
 //Character distribution taken from standard Scrabble distribution
 const characters = "aaaaaaaaabbccddddeeeeeeeeeeeefffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrsssssttttttuuuuvvwwxyyz"
@@ -58,6 +82,15 @@ const charNum = 10
 let li = ""
 
 function main(){
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
   mainContainer.style.display = "block"
   container.style.display = "block"
   highscoreHeader.style.display = "none"
@@ -76,8 +109,10 @@ function main(){
     if (event.key === "Enter"){
       wordCheck(event)
     } else if (event.keyCode === 8){
+      sounds.playBackSpace()
       unhighlightChar(event)
     }else {
+        sounds.playKeyPress()
         highlightChar(event)
     }
   })
@@ -88,7 +123,7 @@ function main(){
 }
 
 function userLogin(event){
-  // checkRegex("a")
+  checkRegex("a")
   event.preventDefault()
   let userName = event.target[0].value
 
@@ -250,20 +285,26 @@ function wordCheck(event){
     }
   })
   if (!goodBad){
-    alert("letter not on list or already used up")
+    sounds.playBadWord()
+    modal.style.display = "block"
+    modalText.innerText = "Letter not on list or already used up!"
   } else {
     if (checkRegex(event.target.value)){
       if (wordListGen.includes(" " + event.target.value + " ")){
+        sounds.playBadWord()
         goodBad = false
         event.target.value = ""
-        alert("Cannot reuse accepted words")
+        modal.style.display = "block"
+        modalText.innerText = "Cannot reuse accepted words!"
       } else {
         wordListGen = wordListGen + " " + event.target.value + " "
       }
     } else {
+      sounds.playBadWord()
       goodBad = false
       event.target.value = ""
-      alert("Word is not in the dictionary")
+      modal.style.display = "block"
+      modalText.innerText = "Word is not in the dictionary!"
     }
   }
   if (goodBad){
@@ -353,6 +394,7 @@ function turnOffReplay(){
 }
 
 function loadAnimatedChar(wordInput){
+  sounds.playLoadLetters()
   let arr = wordInput.split("")
     arr.forEach(letter => {
       charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
@@ -363,23 +405,26 @@ function loadAnimatedChar(wordInput){
 }
 
 function highlightChar(){
-  console.log(event.keyCode)
-  for (i = 0; i < 10; i++){
+  letterfound = false
+  for (i = 0; i < charList.children.length; i++){
     if (event.key.toUpperCase() === charList.children[i].innerText && charList.children[i].className !== "found-letter"){
       charList.children[i].className = "found-letter"
       charIdx.unshift(i)
+      letterfound = true
       break
-    }
+    } 
   }
 }
 
 function unhighlightChar(){
+  if (letterfound){
   charList.children[charIdx[0]].className = "guess-letter"
   charIdx.shift()
+  }
 }
 
 function resetChars(){
-  for (i = 0; i < 10; i++){
+  for (i = 0; i < charList.children.length; i++){
     charList.children[i].className = "guess-letter"
   }
 }
