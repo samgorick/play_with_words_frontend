@@ -101,12 +101,9 @@ function main(){
   highscoreHeader.style.display = "none"
   userDisp.style.display = "none"
   playArea.style.display = "none"
-  // resultDiv.style.display = "none"
   playAgain.style.display = "none"
   highscoreAlert.style.display = "none"
   userGamesHeader.style.display = "none"
-  
-  // hscores.style.display = "none"
   highscores.style.display = "none"
   
   login.addEventListener("submit", userLogin)
@@ -148,18 +145,23 @@ function userLogin(event){
   .then(userData => {
     container.style.display = "none"
     userDisp.style.display = "block"
-    tl.from(userDisplayName, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
-    tl.from(playAgain, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     highscoreHeader.style.display = "block"
-    tl.from(highscoreHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     userGamesHeader.style.display = "block"
-    tl.from(userGamesHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+    playAgain.style.display = "inline"
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
+
+    pageLoadAnimations(userDisplayName)
+    pageLoadAnimations(playAgain)
+    pageLoadAnimations(highscoreHeader)
+    pageLoadAnimations(userGamesHeader)
 
     displayUserGames(userData)
     currentUser = userData
-    playAgain.style.display = "inline"
   })
+}
+
+function pageLoadAnimations(element){
+  return tl.from(element, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
 }
 
 function loadHighscores(){
@@ -206,7 +208,6 @@ function displayOneGame(gameObj){
 }
 
 function playGame(user){
-  // currentUserId = user.id
   playAgain.style.display = "none"
   container.style.display = "none"
   userDisplayName.innerText = `Welcome, ${user.name}! Let's play with words!`
@@ -238,7 +239,6 @@ function playGame(user){
       seconds--;
       if (current_minutes === 0 && seconds === 0){
         timer.childNodes[1].remove()
-        // guessInput.style.display = "none"
         sounds.playgameDone()
         timer.innerText = "Time's up!"
         saveWord.disabled = false
@@ -436,4 +436,5 @@ function resetChars(){
     charList.children[i].className = "guess-letter"
   }
 }
+
 main()
