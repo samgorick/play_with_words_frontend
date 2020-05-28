@@ -22,6 +22,23 @@ const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const highscores = document.querySelector(".highscores")
 
+const sounds = {
+  playFoundWord: () => {
+    const foundWord = new Audio()
+    foundWord.src = "src/sound_effects/foundWord.mp3"
+    foundWord.play()
+  },
+  playgameDone: () => {
+  const gameDone = new Audio()
+  gameDone.src = "src/sound_effects/gameDone.mp3"
+  gameDone.play()
+  },
+  playHighscore: () => {
+    const highscoreSound = new Audio()
+    highscoreSound.src = "src/sound_effects/highscore.mp3"
+    highscoreSound.play()
+    }
+}
 const highscoreHeader = document.querySelector("#highscore-header")
 const userGamesHeader = document.querySelector("#user-games-header")
 
@@ -184,6 +201,7 @@ function playGame(user){
       if (current_minutes === 0 && seconds === 0){
         timer.childNodes[1].remove()
         // guessInput.style.display = "none"
+        sounds.playgameDone()
         timer.innerText = "Time's up!"
         saveWord.disabled = false
         word.disabled = true
@@ -251,6 +269,7 @@ function wordCheck(event){
     }
   }
   if (goodBad){
+    sounds.playFoundWord()
     li += `<li>${event.target.value}</li>`
     score += event.target.value.length
     currentScore.innerHTML = `Score: ${score}`
@@ -299,6 +318,7 @@ function saveList(event){
     replays[i].style.display = "inline"
   }
   if (score > scoreToBeat){
+    sounds.playHighscore()
     loadHighscores()
   }
 }
