@@ -34,6 +34,7 @@ let wordListGen = ""
 let currentUser
 let score = 0
 let replayAGame = false
+let charIdx = []
 
 //Character distribution taken from standard Scrabble distribution
 const characters = "aaaaaaaaabbccddddeeeeeeeeeeeefffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrsssssttttttuuuuvvwwxyyz"
@@ -55,11 +56,13 @@ function main(){
   highscores.style.display = "none"
   
   login.addEventListener("submit", userLogin)
-  wordInput.addEventListener("keypress", (event) => {
+  wordInput.addEventListener("keyup", (event) => {
     if (event.key === "Enter"){
       wordCheck(event)
-    } else {
-      highlightChar(event)
+    } else if (event.keyCode === 8){
+      unhighlightChar(event)
+    }else {
+        highlightChar(event)
     }
   })
   saveWord.addEventListener("click", saveList)
@@ -217,6 +220,7 @@ function getChars(){
 
 function wordCheck(event){
   resetChars()
+  charIdx = []
   
   let wordArray = wordGenerated.split("")
   let goodBad = true
@@ -334,13 +338,19 @@ function loadAnimatedChar(wordInput){
 }
 
 function highlightChar(){
-  console.log(event.key)
+  console.log(event.keyCode)
   for (i = 0; i < 10; i++){
     if (event.key.toUpperCase() === charList.children[i].innerText && charList.children[i].className !== "found-letter"){
       charList.children[i].className = "found-letter"
+      charIdx.unshift(i)
       break
     }
   }
+}
+
+function unhighlightChar(){
+  charList.children[charIdx[0]].className = "guess-letter"
+  charIdx.shift()
 }
 
 function resetChars(){
