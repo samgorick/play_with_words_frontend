@@ -21,6 +21,24 @@ const playAgain = document.querySelector("#play-again")
 const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const highscores = document.querySelector(".highscores")
+
+const sounds = {
+  playFoundWord: () => {
+    const foundWord = new Audio()
+    foundWord.src = "src/sound_effects/foundWord.mp3"
+    foundWord.play()
+  },
+  playgameDone: () => {
+  const gameDone = new Audio()
+  gameDone.src = "src/sound_effects/gameDone.mp3"
+  gameDone.play()
+  },
+  playHighscore: () => {
+    const highscoreSound = new Audio()
+    highscoreSound.src = "src/sound_effects/highscore.mp3"
+    highscoreSound.play()
+    }
+}
 const highscoreHeader = document.querySelector("#highscore-header")
 const userGamesHeader = document.querySelector("#user-games-header")
 
@@ -31,6 +49,7 @@ let currentUser
 let score = 0
 let replayAGame = false
 let charIdx = []
+let scoreToBeat = 0
 
 //Character distribution taken from standard Scrabble distribution
 const characters = "aaaaaaaaabbccddddeeeeeeeeeeeefffggghhiiiiiiiiijkllllmmnnnnnnooooooooppqrrrrrrsssssttttttuuuuvvwwxyyz"
@@ -80,6 +99,9 @@ function userLogin(event){
     body: JSON.stringify({name: userName})
   }
 
+  loadHighscores()
+  highscores.style.display = "flex"
+
   fetch(USER_URL, reqObj)
   .then(resp => resp.json())
   .then(userData => {
@@ -95,7 +117,6 @@ function userLogin(event){
     tl.from(userGamesHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
 
-
     displayUserGames(userData)
     currentUser = userData
     playAgain.style.display = "inline"
@@ -103,10 +124,12 @@ function userLogin(event){
 }
 
 function loadHighscores(){
+  highscores.innerHTML = ""
   fetch(GAME_URL)
   .then(resp => resp.json())
   .then(highscoreData => {
     highscoreData.forEach(game => {
+      scoreToBeat = game.score
       let cardData = `<div class="highscore-card" data-list-id=${game.letter_list_id}>
         <p>${game.letter_list.letters.split("").join(", ")}</p>
         <h4>${game.user.name}</h4>
@@ -177,6 +200,7 @@ function playGame(user){
       if (current_minutes === 0 && seconds === 0){
         timer.childNodes[1].remove()
         // guessInput.style.display = "none"
+        sounds.playgameDone()
         timer.innerText = "Time's up!"
         saveWord.disabled = false
         word.disabled = true
@@ -244,6 +268,7 @@ function wordCheck(event){
     }
   }
   if (goodBad){
+    sounds.playFoundWord()
     li += `<li>${event.target.value}</li>`
     score += event.target.value.length
     currentScore.innerHTML = `Score: ${score}`
@@ -290,6 +315,10 @@ function saveList(event){
   replays = document.getElementsByClassName("replay")
   for (let i = 0; i < replays.length; i++){ 
     replays[i].style.display = "inline"
+  }
+  if (score > scoreToBeat){
+    sounds.playHighscore()
+    loadHighscores()
   }
 }
 
