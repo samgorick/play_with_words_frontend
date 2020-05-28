@@ -206,11 +206,6 @@ function getChars(){
   .then(resp => resp.json())
   .then(wordData => {
     charList.dataset.listId = wordData.id
-    let arr = wordData.letters.split("")
-    arr.forEach(letter => {
-      charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
-    })
-    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.1, rotate: 270, ease: "back"});
     loadAnimatedChar(wordData.letters)
   })
 }
@@ -298,7 +293,7 @@ function saveList(event){
 }
 
 function playGameAgain(){
-  // playArea.style.display = "block"
+  playArea.style.display = "block"
   charList.innerHTML = ""
   turnOffReplay()
   playGame(currentUser)
