@@ -21,6 +21,7 @@ const playAgain = document.querySelector("#play-again")
 const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const highscores = document.querySelector(".highscores")
+const highscoreAlert = document.querySelector("#highscore-alert")
 const modal = document.getElementById("myModal")
 const modalText = document.getElementById("modal-text")
 const span = document.getElementsByClassName("close")[0]
@@ -65,9 +66,6 @@ const sounds = {
 const highscoreHeader = document.querySelector("#highscore-header")
 const userGamesHeader = document.querySelector("#user-games-header")
 
-// const hscores = document.querySelector(".hscores")
-
-
 const tl = gsap.timeline();
 let wordGenerated = ""
 let wordListGen = ""
@@ -100,7 +98,7 @@ function main(){
   playArea.style.display = "none"
   // resultDiv.style.display = "none"
   playAgain.style.display = "none"
-  
+  highscoreAlert.style.display = "none"
   userGamesHeader.style.display = "none"
   
   // hscores.style.display = "none"
@@ -145,7 +143,7 @@ function userLogin(event){
   .then(userData => {
     container.style.display = "none"
     userDisp.style.display = "block"
-    tl.from(userDisp, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+    tl.from(userDisplayName, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     tl.from(playAgain, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     highscoreHeader.style.display = "block"
     tl.from(highscoreHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
@@ -360,7 +358,12 @@ function saveList(event){
   }
   if (score > scoreToBeat){
     sounds.playHighscore()
-    loadHighscores()
+    highscoreAlert.style.display = "block"
+    highscores.innerHTML = ""
+    tl.fromTo(highscoreAlert, {opacity: 1, fontSize: 0, color: "red"}, {duration: 4, opacity: 0, fontSize: 150, onComplete : function(){
+      highscoreAlert.style.display = "none"
+      loadHighscores()
+    }});
   }
 }
 
@@ -396,7 +399,7 @@ function loadAnimatedChar(wordInput){
     arr.forEach(letter => {
       charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
     })
-    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "back"}); 
+    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.1, rotate: 720, ease: "back"}); 
     resetChars()
      
 }
