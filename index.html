@@ -4,11 +4,6 @@
     <meta charset="utf-8" />
     <title>Play With Words</title>
     <link rel="stylesheet" href="styles.css" />
-    <style>
-      ul#good-words li {
-        display:inline;
-      }
-    </style>
   </head>
   <body>
     <div class="page-container">
@@ -35,9 +30,6 @@
       <div class="user-display"> 
         <h1 id="user-display-name"></h1>
       </div>
-      <h3>Highscores</h3>
-      <div class="highscores">
-        </div>
       <div>
         <button id="play-again" class="button">Play game</button> 
       </div>
@@ -62,11 +54,9 @@
         </ul>
         <br />
       </div>
-      <div class="result">
-        <h4>Your words</h4>
-        <h4 id="result-list"></h4>
-        <h4 id="score"></h4>
-      </div>
+      <h3 id="highscore-header">Highscores</h3>
+      <div class="highscores"></div>
+      <h3 id="user-games-header">Previous Games</h3>
       <div class="user-games">
 
       </div>

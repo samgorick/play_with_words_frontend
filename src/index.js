@@ -21,6 +21,8 @@ const playAgain = document.querySelector("#play-again")
 const guessInput = document.querySelector("#word")
 const timer = document.getElementById("timer")
 const highscores = document.querySelector(".highscores")
+const highscoreHeader = document.querySelector("#highscore-header")
+const userGamesHeader = document.querySelector("#user-games-header")
 
 const tl = gsap.timeline();
 let wordGenerated = ""
@@ -37,10 +39,12 @@ let li = ""
 function main(){
   mainContainer.style.display = "block"
   container.style.display = "block"
+  highscoreHeader.style.display = "none"
   userDisp.style.display = "none"
   playArea.style.display = "none"
-  resultDiv.style.display = "none"
+  // resultDiv.style.display = "none"
   playAgain.style.display = "none"
+  userGamesHeader.style.display = "none"
   
   login.addEventListener("submit", userLogin)
   wordInput.addEventListener("keypress", (event) => {
@@ -55,7 +59,7 @@ function main(){
 }
 
 function userLogin(event){
-  checkRegex("a")
+  // checkRegex("a")
   event.preventDefault()
   let userName = event.target[0].value
 
@@ -72,11 +76,18 @@ function userLogin(event){
   .then(userData => {
     container.style.display = "none"
     userDisp.style.display = "block"
+    tl.from(userDisp, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+    tl.from(playAgain, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+    highscoreHeader.style.display = "block"
+    tl.from(highscoreHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+    userGamesHeader.style.display = "block"
+    tl.from(userGamesHeader, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
     userDisplayName.innerText = `Welcome, ${userData.name}! Let's play!`
-    displayUserGames(userData)
     loadHighscores()
+    displayUserGames(userData)
     currentUser = userData
-    playAgain.style.display = "inline"})
+    playAgain.style.display = "inline"
+  })
 }
 
 function loadHighscores(){
@@ -92,6 +103,7 @@ function loadHighscores(){
       </div>`
       highscores.innerHTML += cardData
     })
+    tl.from(".highscore-card", {duration: 0.5, opacity: 0, y: -100, stagger: 0.1, ease: "power2.out"});
   })
 }
 
@@ -110,11 +122,12 @@ function displayUserGames(userData){
     }
     userGames.innerHTML += displayOneGame(gameObj)
     })
+    tl.from(".user-card", {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
 }
 
 function displayOneGame(gameObj){
   return `<div class="user-card" data-list-id=${gameObj.letter_list_id}> <p>${gameObj.letter_list.split("").join(", ")}</p>` + 
-    `<p>${gameObj.word_list}</p>` + `<p>Score: ${gameObj.score}</p>` + `<button class="replay">Replay</button>` +
+  `<p>Score: ${gameObj.score}</p>` + `<button class="replay">Replay</button>` +
     `</div>`
 }
 
@@ -125,7 +138,6 @@ function playGame(user){
   userDisplayName.innerText = `Welcome, ${user.name}! Let's play with words!`
   userDisp.style.display = "block"
   goodWords.innerHTML = ""
-  resultDiv.style.display = "none"
   currentScore.innerHTML = ""
   
   li = ""
@@ -151,7 +163,6 @@ function playGame(user){
       let current_minutes = mins-1
       seconds--;
       if (current_minutes === 0 && seconds === 0){
-        
         timer.childNodes[1].remove()
         // guessInput.style.display = "none"
         timer.innerText = "Time's up!"
@@ -187,7 +198,7 @@ function getChars(){
     arr.forEach(letter => {
       charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
     })
-    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.25, rotate: 270, ease: "circ"});
+    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.1, rotate: 270, ease: "back"});
   })
 }
 
@@ -236,7 +247,7 @@ function checkRegex(word) {
 }
 
 function saveList(event){
-  saveWord.disabled = true
+  playArea.style.display = "none"
   let list = [] 
   goodWords.childNodes.forEach(word => {
     list.push(word.innerText)
@@ -256,9 +267,6 @@ function saveList(event){
   })
   .then(resp => resp.json())
   .then(gameResult => {
-    resultList.innerText = gameResult.word_list
-    scoreDisp.innerText = `Your score is: ${gameResult.score}`
-    resultDiv.style.display = "block"
     let gameObj = {
       letter_list_id: charList.dataset.listId,
       word_list: wordToSave,
@@ -276,6 +284,7 @@ function saveList(event){
 }
 
 function playGameAgain(){
+  playArea.style.display = "block"
   charList.innerHTML = ""
   turnOffReplay()
   playGame(currentUser)
@@ -283,7 +292,6 @@ function playGameAgain(){
 }
 
 function replayGame(event){
-  
   if (event.target.className === "replay"){
     charList.innerHTML = ""
     wordGenerated = event.target.parentNode.firstElementChild.innerText.split(", ").join("")
@@ -297,7 +305,6 @@ function replayGame(event){
     replayAGame = true    
     playGame(currentUser)
   }
-
 }
 
 function turnOffReplay(){
@@ -306,6 +313,5 @@ function turnOffReplay(){
     replays[i].style.display = "none"
   }
 }
-
 
 main()
