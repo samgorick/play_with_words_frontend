@@ -4,7 +4,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   font-size: 20px;
   font-weight: 300;
-  background-color: #6983f7;
+  background-color: #ed4a4a;
 }
 
 .page-container {
@@ -18,7 +18,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #e6e8f2;
+  background-color: #e8e3e3;
   border-radius: 12px;
   transition: 0.25s;
 }
@@ -58,15 +58,15 @@ h3 {
 
 .input-text:hover {
   width: 90%;
-  border: 2px solid #4bc8f2;
+  border: 2px solid #f48bd1;
 }
 
 .submit, .replay {
   border: 0;
   margin: 1rem auto;
   text-align: center;
-  border: 2px solid #6983f7;
-  background-color: #6983f7;
+  border: 2px solid #ed4a4a;
+  background-color: #ed4a4a;
   padding: 14px 10px;
   width: 65%;
   border-radius: 24px;
@@ -78,8 +78,8 @@ h3 {
 }
 
 #play-again {
-  border-color: #4bc8f2;
-  background-color: #4bc8f2;
+  border-color: #f48bd1;
+  background-color: #f48bd1;
   margin: 5rem auto;
   cursor: pointer;
   border: 0;
@@ -95,8 +95,8 @@ h3 {
 }
 
 .submit:hover, .replay:hover {
-  border-color: #4bc8f2;
-  background-color: #4bc8f2;
+  border-color: #f48bd1;
+  background-color: #f48bd1;
   cursor: pointer;
 }
 
@@ -130,7 +130,7 @@ h3 {
   width: 60%;
   margin-left: auto;
   margin-right: auto;
-  background-color: #e6e8f2;
+  background-color: #e8e3e3;
   border-radius: 12px;
 }
 
@@ -147,7 +147,7 @@ h3 {
   font-size: 30px;
   font-weight: bold;
   text-transform: uppercase;
-  background-color: #4bc8f2;
+  background-color: #f48bd1;
   width: 40px;
   height: 40px;
   padding: 1px;
@@ -194,7 +194,7 @@ input[type=text] {
 }
 
 #save-word {
-  background-color:#4bc8f2;
+  background-color:#f48bd1;
   border: none;
   color: white;
   padding: 10px 22px;
@@ -224,7 +224,7 @@ input[type=text] {
 }
 
 .user-card, .highscore-card {
-  background-color: #e6e8f2;
+  background-color: #e8e3e3;
   height: auto;
   width: 220px;
   padding: 10px;
@@ -311,7 +311,7 @@ input[type=text] {
 .hvr-ripple-out:before {
   content: '';
   position: absolute;
-  border: #4bc8f2 solid 6px;
+  border: #f48bd1 solid 6px;
   border-radius: 24px;
   top: 0;
   right: 0;
