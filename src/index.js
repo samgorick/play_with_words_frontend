@@ -401,7 +401,7 @@ function saveList(event){
     sounds.playHighscore()
     highscoreAlert.style.display = "block"
     highscores.innerHTML = ""
-    tl.fromTo(highscoreAlert, {opacity: 1, fontSize: 0, color: "red"}, {duration: 4, opacity: 0, fontSize: 150, onComplete : function(){
+    tl.fromTo(highscoreAlert, {opacity: 1, fontSize: 0, color: "#96E6B3"}, {duration: 4, opacity: 0, fontSize: 150, onComplete : function(){
       highscoreAlert.style.display = "none"
       loadHighscores()
     }});
