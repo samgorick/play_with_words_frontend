@@ -127,6 +127,10 @@ h1 {
 #char-list {
   display: flex;
   justify-content: center;
+  width: 50%;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .guess-letter, .found-letter {
@@ -156,18 +160,11 @@ h1 {
   line-height: 40px;
 }
 
-.result {
-  margin: 2rem;
-  border: darkgrey solid 1px;
-  box-shadow: 3px 4px #1b043a
-}
-
 ul {
   padding-inline-start: 0px;
   flex-wrap: wrap;
   list-style-type: none;
   display: flex;
-  justify-content: center;
 }
 
 li {
