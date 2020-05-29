@@ -23,6 +23,10 @@ body {
   transition: 0.25s;
 }
 
+.login-image {
+  padding: 15px;
+}
+
 .login-image img {
   height: 70px;
   width: auto;
@@ -112,6 +116,10 @@ h3 {
 
 .user-display {
   margin: 0rem 0rem 2rem 0rem;
+}
+
+#user-games-header {
+  margin: 50px;
 }
 
 #timer {
