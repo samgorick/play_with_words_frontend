@@ -78,6 +78,7 @@ const userGamesHeader = document.querySelector("#user-games-header")
 
 // this set up the timeline function to be used for animation
 const tl = gsap.timeline();
+const pageLoad = gsap.timeline();
 let wordGenerated = ""
 let wordListGen = ""
 let currentUser
@@ -111,6 +112,13 @@ function main(){
   highscoreAlert.style.display = "none"
   userGamesHeader.style.display = "none"
   highscores.style.display = "none"
+
+  tl.from('#login-title', 0.5, {opacity: 0, delay: 0.5});
+  tl.from('#login-input', 0.5, {opacity: 0});
+  tl.from('#login-submit', 0.5, {opacity: 0});
+  tl.from('.login-image', 0.5, {opacity: 0});
+  tl.to('#login-title', 0.75, {y: -10, repeat:-1, ease: "circ", yoyo: true})
+  tl.to('.login-image', 4, { rotation: "+=360", repeat:-1, ease: Linear.easeNone, transformOrigin:"50% 50%", delay: -0.75 });
   
   // add listener for login submit
   login.addEventListener("submit", userLogin)
@@ -168,7 +176,7 @@ function userLogin(event){
 
     // this display all the games played before
 
-    pageLoadAnimations(userDisplayName)
+    pageLoad.from(userDisplayName, {duration: 0.5, opacity: 0, delay: 0.5})
     pageLoadAnimations(playAgain)
     pageLoadAnimations(highscoreHeader)
     pageLoadAnimations(userGamesHeader)
@@ -179,7 +187,7 @@ function userLogin(event){
 }
 
 function pageLoadAnimations(element){
-  return tl.from(element, {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+  return pageLoad.from(element, {duration: 0.5, opacity: 0});
 }
 
 // this loads the highscores from backend. The index route on backend returns top 3 scores data
@@ -198,7 +206,7 @@ function loadHighscores(){
       </div>`
       highscores.innerHTML += cardData
     })
-    tl.from(".highscore-card", {duration: 0.5, opacity: 0, y: -100, stagger: 0.1, ease: "power2.out"});
+    pageLoad.from(".highscore-card", {duration: 0.5, opacity: 0, y: -100, stagger: 0.1, ease: "power2.out"});
   })
 }
 
@@ -218,7 +226,7 @@ function displayUserGames(userData){
     }
     userGames.innerHTML += displayOneGame(gameObj)
     })
-    tl.from(".user-card", {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
+    pageLoad.from(".user-card", {duration: 0.5, opacity: 0, y: -100, ease: "power2.out"});
 }
 
 // this display one single game card
@@ -255,7 +263,7 @@ function playGame(user){
   // start countdown of 2 min
   countdown(2)
 
-  // this is the countdown funtion for the 2 min timer
+  // this is the countdown function for the 2 min timer
   function countdown(minutes) {
     let seconds = 60;
     let mins = minutes
@@ -401,7 +409,7 @@ function saveList(event){
     sounds.playHighscore()
     highscoreAlert.style.display = "block"
     highscores.innerHTML = ""
-    tl.fromTo(highscoreAlert, {opacity: 1, fontSize: 0, color: "#96E6B3"}, {duration: 4, opacity: 0, fontSize: 150, onComplete : function(){
+    pageLoad.fromTo(highscoreAlert, {opacity: 1, fontSize: 0, color: "#96E6B3"}, {duration: 4, opacity: 0, fontSize: 150, onComplete : function(){
       highscoreAlert.style.display = "none"
       loadHighscores()
     }});
@@ -449,7 +457,7 @@ function loadAnimatedChar(wordInput){
     arr.forEach(letter => {
       charList.innerHTML += `<div class="guess-letter"><p>${letter}</p></div>`
     })
-    tl.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.1, rotate: 720, ease: "back"}); 
+    pageLoad.from(".guess-letter", {duration: 1, opacity: 0, x: 500, y: 500, stagger: 0.1, rotate: 720, ease: "back"}); 
     resetChars()
      
 }
