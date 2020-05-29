@@ -21,10 +21,11 @@
     <div class="page-container">
       <div class="login-container">
         <form class="log-in">
-          <h1>Play With Words!</h1>
+          <h1 id="login-title">Play With Words!</h1>
           <input
             type="text"
             name="name"
+            id="login-input"
             value=""
             placeholder="Username"
             autocomplete="off"
@@ -33,11 +34,13 @@
           <br />
           <input
             type="submit"
+            id="login-submit"
             name="submit"
             value="Log In"
             class="submit"
           />
         </form>
+        <div class="login-image"><img src="src/sound_effects/liverpool.png"></div>
       </div>
       <div class="user-display"> 
         <h1 id="user-display-name"></h1>

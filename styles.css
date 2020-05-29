@@ -23,6 +23,11 @@ body {
   transition: 0.25s;
 }
 
+.login-image img {
+  height: 70px;
+  width: auto;
+}
+
 h1 {
   color: black;
   opacity: 70%;

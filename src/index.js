@@ -111,6 +111,12 @@ function main(){
   highscoreAlert.style.display = "none"
   userGamesHeader.style.display = "none"
   highscores.style.display = "none"
+
+  tl.from('#login-title', 1, { ease: "back", opacity: 0, y: -250});
+  tl.from('#login-input', 0.5, {opacity: 0});
+  tl.from('#login-submit', 0.5, {opacity: 0});
+  tl.from('.login-image', 0.5, {opacity: 0});
+  tl.to('.login-image', 4, { rotation: "+=360", repeat:-1, ease: Linear.easeNone, transformOrigin:"50% 50%" });
   
   // add listener for login submit
   login.addEventListener("submit", userLogin)
