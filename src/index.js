@@ -1,6 +1,7 @@
-const USER_URL = 'http://localhost:3000/users';
-const LETTER_LIST_URL = 'http://localhost:3000/letter_lists';
-const GAME_URL = 'http://localhost:3000/games';
+const ENDPOINT = 'https://play-with-words.herokuapp.com'
+const USER_URL = `${ENDPOINT}/users`;
+const LETTER_LIST_URL = `${ENDPOINT}/letter_lists`;
+const GAME_URL = `${ENDPOINT}/games`;
 
 const mainContainer = document.querySelector('.page-container');
 const container = document.querySelector('.login-container');
